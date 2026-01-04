@@ -1,0 +1,1581 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="GAP-URGENet: A Generative-Predictive Fusion Framework for Universal Speech Enhancement.">
+    <meta name="author" content="Xiaobin-Rong">
+
+    <title>GAP-URGENet Demo</title>
+
+    <!-- 引入Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Serif+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Lightbox2 CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet">
+
+    <!-- Lightbox2 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+
+    <!-- 引入CSS文件 -->
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <!-- 页头 -->
+    <div class="header">
+        <h1>GAP-URGENet: A Generative-Predictive Fusion Framework <br> for Universal Speech Enhancement</h1>
+        <div class="authors">
+            Xiaobin Rong<sup>1,2</sup>, Yushi Wang<sup>1,2</sup>, Zheng Wang<sup>1,2</sup>, Jing Lu<sup>1,2</sup>
+        </div>
+        <div class="affiliations">
+            <sup>1</sup>Key Laboratory of Modern Acoustics, Nanjing University<br>
+            <sup>2</sup>NJU-Horizon Intelligent Audio Lab, Horizon Robotics
+        </div>
+    </div>
+
+    <!-- 代码 & paper -->
+    <div class="btn-container">
+        <a class="btn" href="https://urgent-challenge.com/competitions/15#final_results">🏆 Challenge Leaderboard</a>
+        <a class="btn" href="https://arxiv.org/abs/">📄 ArXiv Paper</a>
+    </div>
+
+    <!-- Abstract Section -->
+    <div class="narrow-container">
+        <div class="abstract-section">
+            <h2>Abstract</h2>
+            <div class="abstract-text">
+                <p>We introduce GAP-URGENet, a generative-predictive fusion framework developed for Track 1 of the ICASSP 2026 URGENT Challenge. The system integrates a generative branch, which performs full-stack speech restoration in a self-supervised representation domain and reconstructs the waveform via a neural vocoder, along with a predictive branch that performs spectrogram-domain enhancement, providing complementary cues. Outputs from both branches are fused by a post-processing module, which also performs bandwidth extension to generate the enhanced waveform at 48 kHz, later downsampled to the original sampling rate. This generative-predictive fusion improves robustness and perceptual quality, achieving top performance in the blind-test phase and ranking 1st in the objective evaluation.</p>
+            </div>
+            <div class="framework-image">
+                <img src="model_framework.png" alt="GAP-URGENet Framework">
+            </div>
+            <div class="image-caption">
+                    <strong>Figure 1:</strong> Overall architecture of the proposed GAP-URGENet.
+            </div>
+            <div class="framework-image">
+                <img src="challenge_leaderboard.png" alt="Challenge Leaderboard">
+            </div>
+            <div class="image-caption">
+                    <strong>Figure 2:</strong> Rankings in the objective stage of the final leaderboard, with our team (WR) achieving first place.
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Demos Section -->
+    <div class="narrow-container">
+        <div class="section-title">Audio Demos from the Validation Set</div>
+        
+        <!-- fileid_1 -->
+        <div class="file-section">
+            <div class="file-header">
+                <div class="file-title"><strong>fileid_1.flac</strong>: moderate noise with clipping distortion.</div>
+            </div>
+            <div class="audio-grid">
+
+                <div class="audio-card">
+                    <div class="card-title">Noisy Signal</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_1_Noisy.png" data-lightbox="audio-demo-fileid_1" data-title="Noisy">
+                            <img src="urgent3_dev_figs/fileid_1_Noisy.png" alt="Noisy 1">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_1_Noisy.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Pred. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_1_Pred.png" data-lightbox="audio-demo-fileid_1" data-title="Pred">
+                            <img src="urgent3_dev_figs/fileid_1_Pred.png" alt="Pred 1">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_1_Pred.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Gen. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_1_Gen.png" data-lightbox="audio-demo-fileid_1" data-title="Gen">
+                            <img src="urgent3_dev_figs/fileid_1_Gen.png" alt="Gen 1">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_1_Gen.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="audio-card">
+                    <div class="card-title">GAP-URGENet Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_1_GAP-URGENet.png" data-lightbox="audio-demo-fileid_1" data-title="GAP-URGENet">
+                            <img src="urgent3_dev_figs/fileid_1_GAP-URGENet.png" alt="GAP-URGENet 1">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_1_GAP-URGENet.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="audio-card">
+                    <div class="card-title">Clean Signal</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_1_Clean.png" data-lightbox="audio-demo-fileid_1" data-title="Clean">
+                            <img src="urgent3_dev_figs/fileid_1_Clean.png" alt="Clean 1">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_1_Clean.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- fileid_2 -->
+        <div class="file-section">
+            <div class="file-header">
+                <div class="file-title"><strong>fileid_2.flac</strong>: Strong noise.</div>
+            </div>
+            <div class="audio-grid">
+
+                <div class="audio-card">
+                    <div class="card-title">Noisy Signal</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_2_Noisy.png" data-lightbox="audio-demo-fileid_2" data-title="Noisy">
+                            <img src="urgent3_dev_figs/fileid_2_Noisy.png" alt="Noisy 2">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_2_Noisy.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Pred. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_2_Pred.png" data-lightbox="audio-demo-fileid_2" data-title="Pred">
+                            <img src="urgent3_dev_figs/fileid_2_Pred.png" alt="Pred 2">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_2_Pred.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Gen. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_2_Gen.png" data-lightbox="audio-demo-fileid_2" data-title="Gen">
+                            <img src="urgent3_dev_figs/fileid_2_Gen.png" alt="Gen 2">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_2_Gen.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="audio-card">
+                    <div class="card-title">GAP-URGENet Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_2_GAP-URGENet.png" data-lightbox="audio-demo-fileid_2" data-title="GAP-URGENet">
+                            <img src="urgent3_dev_figs/fileid_2_GAP-URGENet.png" alt="GAP-URGENet 2">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_2_GAP-URGENet.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="audio-card">
+                    <div class="card-title">Clean Signal</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_2_Clean.png" data-lightbox="audio-demo-fileid_2" data-title="Clean">
+                            <img src="urgent3_dev_figs/fileid_2_Clean.png" alt="Clean 2">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_2_Clean.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- fileid_35 -->
+        <div class="file-section">
+            <div class="file-header">
+                <div class="file-title"><strong>fileid_35.flac</strong>: Mild noise with frequent packet loss.</div>
+            </div>
+            <div class="audio-grid">
+
+                <div class="audio-card">
+                    <div class="card-title">Noisy Signal</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_35_Noisy.png" data-lightbox="audio-demo-fileid_35" data-title="Noisy">
+                            <img src="urgent3_dev_figs/fileid_35_Noisy.png" alt="Noisy 35">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_35_Noisy.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Pred. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_35_Pred.png" data-lightbox="audio-demo-fileid_35" data-title="Pred">
+                            <img src="urgent3_dev_figs/fileid_35_Pred.png" alt="Pred 35">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_35_Pred.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Gen. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_35_Gen.png" data-lightbox="audio-demo-fileid_35" data-title="Gen">
+                            <img src="urgent3_dev_figs/fileid_35_Gen.png" alt="Gen 35">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_35_Gen.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="audio-card">
+                    <div class="card-title">GAP-URGENet Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_35_GAP-URGENet.png" data-lightbox="audio-demo-fileid_35" data-title="GAP-URGENet">
+                            <img src="urgent3_dev_figs/fileid_35_GAP-URGENet.png" alt="GAP-URGENet 35">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_35_GAP-URGENet.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="audio-card">
+                    <div class="card-title">Clean Signal</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_35_Clean.png" data-lightbox="audio-demo-fileid_35" data-title="Clean">
+                            <img src="urgent3_dev_figs/fileid_35_Clean.png" alt="Clean 35">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_35_Clean.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- fileid_64 -->
+        <div class="file-section">
+            <div class="file-header">
+                <div class="file-title"><strong>fileid_64.flac</strong>: Medium-level babble noise.</div>
+            </div>
+            <div class="audio-grid">
+
+                <div class="audio-card">
+                    <div class="card-title">Noisy Signal</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_64_Noisy.png" data-lightbox="audio-demo-fileid_64" data-title="Noisy">
+                            <img src="urgent3_dev_figs/fileid_64_Noisy.png" alt="Noisy 64">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_64_Noisy.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Pred. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_64_Pred.png" data-lightbox="audio-demo-fileid_64" data-title="Pred">
+                            <img src="urgent3_dev_figs/fileid_64_Pred.png" alt="Pred 64">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_64_Pred.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Gen. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_64_Gen.png" data-lightbox="audio-demo-fileid_64" data-title="Gen">
+                            <img src="urgent3_dev_figs/fileid_64_Gen.png" alt="Gen 64">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_64_Gen.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="audio-card">
+                    <div class="card-title">GAP-URGENet Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_64_GAP-URGENet.png" data-lightbox="audio-demo-fileid_64" data-title="GAP-URGENet">
+                            <img src="urgent3_dev_figs/fileid_64_GAP-URGENet.png" alt="GAP-URGENet 64">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_64_GAP-URGENet.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="audio-card">
+                    <div class="card-title">Clean Signal</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_64_Clean.png" data-lightbox="audio-demo-fileid_64" data-title="Clean">
+                            <img src="urgent3_dev_figs/fileid_64_Clean.png" alt="Clean 64">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_64_Clean.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- fileid_110 -->
+        <div class="file-section">
+            <div class="file-header">
+                <div class="file-title"><strong>fileid_110.flac</strong>: Medium-level noise with medium-gap packet loss (max burst ~0.2s).</div>
+            </div>
+            <div class="audio-grid">
+
+                <div class="audio-card">
+                    <div class="card-title">Noisy Signal</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_110_Noisy.png" data-lightbox="audio-demo-fileid_110" data-title="Noisy">
+                            <img src="urgent3_dev_figs/fileid_110_Noisy.png" alt="Noisy 110">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_110_Noisy.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Pred. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_110_Pred.png" data-lightbox="audio-demo-fileid_110" data-title="Pred">
+                            <img src="urgent3_dev_figs/fileid_110_Pred.png" alt="Pred 110">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_110_Pred.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Gen. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_110_Gen.png" data-lightbox="audio-demo-fileid_110" data-title="Gen">
+                            <img src="urgent3_dev_figs/fileid_110_Gen.png" alt="Gen 110">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_110_Gen.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="audio-card">
+                    <div class="card-title">GAP-URGENet Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_110_GAP-URGENet.png" data-lightbox="audio-demo-fileid_110" data-title="GAP-URGENet">
+                            <img src="urgent3_dev_figs/fileid_110_GAP-URGENet.png" alt="GAP-URGENet 110">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_110_GAP-URGENet.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="audio-card">
+                    <div class="card-title">Clean Signal</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_110_Clean.png" data-lightbox="audio-demo-fileid_110" data-title="Clean">
+                            <img src="urgent3_dev_figs/fileid_110_Clean.png" alt="Clean 110">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_110_Clean.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+            </div>
+        </div> 
+
+        <!-- fileid_123 -->
+        <div class="file-section">
+            <div class="file-header">
+                <div class="file-title"><strong>fileid_123.flac</strong>: Mild noise with medium-gap packet loss (max burst ~0.18s)</div>
+            </div>
+            <div class="audio-grid">
+
+                <div class="audio-card">
+                    <div class="card-title">Noisy Signal</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_123_Noisy.png" data-lightbox="audio-demo-fileid_123" data-title="Noisy">
+                            <img src="urgent3_dev_figs/fileid_123_Noisy.png" alt="Noisy 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_123_Noisy.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Pred. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_123_Pred.png" data-lightbox="audio-demo-fileid_123" data-title="Pred">
+                            <img src="urgent3_dev_figs/fileid_123_Pred.png" alt="Pred 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_123_Pred.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Gen. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_123_Gen.png" data-lightbox="audio-demo-fileid_123" data-title="Gen">
+                            <img src="urgent3_dev_figs/fileid_123_Gen.png" alt="Gen 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_123_Gen.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="audio-card">
+                    <div class="card-title">GAP-URGENet Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_123_GAP-URGENet.png" data-lightbox="audio-demo-fileid_123" data-title="GAP-URGENet">
+                            <img src="urgent3_dev_figs/fileid_123_GAP-URGENet.png" alt="GAP-URGENet 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_123_GAP-URGENet.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="audio-card">
+                    <div class="card-title">Clean Signal</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_123_Clean.png" data-lightbox="audio-demo-fileid_123" data-title="Clean">
+                            <img src="urgent3_dev_figs/fileid_123_Clean.png" alt="Clean 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_123_Clean.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- fileid_124 -->
+        <div class="file-section">
+            <div class="file-header">
+                <div class="file-title"><strong>fileid_124.flac</strong>: Mild noise with codec artifact.</div>
+            </div>
+            <div class="audio-grid">
+
+                <div class="audio-card">
+                    <div class="card-title">Noisy Signal</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_124_Noisy.png" data-lightbox="audio-demo-fileid_124" data-title="Noisy">
+                            <img src="urgent3_dev_figs/fileid_124_Noisy.png" alt="Noisy 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_124_Noisy.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Pred. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_124_Pred.png" data-lightbox="audio-demo-fileid_124" data-title="Pred">
+                            <img src="urgent3_dev_figs/fileid_124_Pred.png" alt="Pred 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_124_Pred.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Gen. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_124_Gen.png" data-lightbox="audio-demo-fileid_124" data-title="Gen">
+                            <img src="urgent3_dev_figs/fileid_124_Gen.png" alt="Gen 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_124_Gen.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="audio-card">
+                    <div class="card-title">GAP-URGENet Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_124_GAP-URGENet.png" data-lightbox="audio-demo-fileid_124" data-title="GAP-URGENet">
+                            <img src="urgent3_dev_figs/fileid_124_GAP-URGENet.png" alt="GAP-URGENet 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_124_GAP-URGENet.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="audio-card">
+                    <div class="card-title">Clean Signal</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_124_Clean.png" data-lightbox="audio-demo-fileid_124" data-title="Clean">
+                            <img src="urgent3_dev_figs/fileid_124_Clean.png" alt="Clean 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_124_Clean.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- fileid_133 -->
+        <div class="file-section">
+            <div class="file-header">
+                <div class="file-title"><strong>fileid_133.flac</strong>: Milde noise with long-gap packet loss (max burst ~0.3s)</div>
+            </div>
+            <div class="audio-grid">
+
+                <div class="audio-card">
+                    <div class="card-title">Noisy Signal</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_133_Noisy.png" data-lightbox="audio-demo-fileid_133" data-title="Noisy">
+                            <img src="urgent3_dev_figs/fileid_133_Noisy.png" alt="Noisy 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_133_Noisy.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Pred. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_133_Pred.png" data-lightbox="audio-demo-fileid_133" data-title="Pred">
+                            <img src="urgent3_dev_figs/fileid_133_Pred.png" alt="Pred 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_133_Pred.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Gen. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_133_Gen.png" data-lightbox="audio-demo-fileid_133" data-title="Gen">
+                            <img src="urgent3_dev_figs/fileid_133_Gen.png" alt="Gen 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_133_Gen.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="audio-card">
+                    <div class="card-title">GAP-URGENet Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_133_GAP-URGENet.png" data-lightbox="audio-demo-fileid_133" data-title="GAP-URGENet">
+                            <img src="urgent3_dev_figs/fileid_133_GAP-URGENet.png" alt="GAP-URGENet 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_133_GAP-URGENet.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="audio-card">
+                    <div class="card-title">Clean Signal</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_133_Clean.png" data-lightbox="audio-demo-fileid_133" data-title="Clean">
+                            <img src="urgent3_dev_figs/fileid_133_Clean.png" alt="Clean 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_133_Clean.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- fileid_218 -->
+        <div class="file-section">
+            <div class="file-header">
+                <div class="file-title"><strong>fileid_218.flac</strong>: Multiple noise types with packet loss.</div>
+            </div>
+            <div class="audio-grid">
+
+                <div class="audio-card">
+                    <div class="card-title">Noisy Signal</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_218_Noisy.png" data-lightbox="audio-demo-fileid_218" data-title="Noisy">
+                            <img src="urgent3_dev_figs/fileid_218_Noisy.png" alt="Noisy 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_218_Noisy.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Pred. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_218_Pred.png" data-lightbox="audio-demo-fileid_218" data-title="Pred">
+                            <img src="urgent3_dev_figs/fileid_218_Pred.png" alt="Pred 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_218_Pred.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Gen. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_218_Gen.png" data-lightbox="audio-demo-fileid_218" data-title="Gen">
+                            <img src="urgent3_dev_figs/fileid_218_Gen.png" alt="Gen 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_218_Gen.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="audio-card">
+                    <div class="card-title">GAP-URGENet Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_218_GAP-URGENet.png" data-lightbox="audio-demo-fileid_218" data-title="GAP-URGENet">
+                            <img src="urgent3_dev_figs/fileid_218_GAP-URGENet.png" alt="GAP-URGENet 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_218_GAP-URGENet.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="audio-card">
+                    <div class="card-title">Clean Signal</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_218_Clean.png" data-lightbox="audio-demo-fileid_218" data-title="Clean">
+                            <img src="urgent3_dev_figs/fileid_218_Clean.png" alt="Clean 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_218_Clean.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- fileid_224 -->
+        <div class="file-section">
+            <div class="file-header">
+                <div class="file-title"><strong>fileid_224.flac</strong>: Mild noise with reverberation.</div>
+            </div>
+            <div class="audio-grid">
+
+                <div class="audio-card">
+                    <div class="card-title">Noisy Signal</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_224_Noisy.png" data-lightbox="audio-demo-fileid_224" data-title="Noisy">
+                            <img src="urgent3_dev_figs/fileid_224_Noisy.png" alt="Noisy 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_224_Noisy.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Pred. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_224_Pred.png" data-lightbox="audio-demo-fileid_224" data-title="Pred">
+                            <img src="urgent3_dev_figs/fileid_224_Pred.png" alt="Pred 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_224_Pred.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Gen. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_224_Gen.png" data-lightbox="audio-demo-fileid_224" data-title="Gen">
+                            <img src="urgent3_dev_figs/fileid_224_Gen.png" alt="Gen 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_224_Gen.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="audio-card">
+                    <div class="card-title">GAP-URGENet Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_224_GAP-URGENet.png" data-lightbox="audio-demo-fileid_224" data-title="GAP-URGENet">
+                            <img src="urgent3_dev_figs/fileid_224_GAP-URGENet.png" alt="GAP-URGENet 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_224_GAP-URGENet.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="audio-card">
+                    <div class="card-title">Clean Signal</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_224_Clean.png" data-lightbox="audio-demo-fileid_224" data-title="Clean">
+                            <img src="urgent3_dev_figs/fileid_224_Clean.png" alt="Clean 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_224_Clean.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- fileid_269 -->
+        <div class="file-section">
+            <div class="file-header">
+                <div class="file-title"><strong>fileid_269.flac</strong>: Strong noise.</div>
+            </div>
+            <div class="audio-grid">
+
+                <div class="audio-card">
+                    <div class="card-title">Noisy Signal</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_269_Noisy.png" data-lightbox="audio-demo-fileid_269" data-title="Noisy">
+                            <img src="urgent3_dev_figs/fileid_269_Noisy.png" alt="Noisy 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_269_Noisy.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Pred. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_269_Pred.png" data-lightbox="audio-demo-fileid_269" data-title="Pred">
+                            <img src="urgent3_dev_figs/fileid_269_Pred.png" alt="Pred 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_269_Pred.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Gen. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_269_Gen.png" data-lightbox="audio-demo-fileid_269" data-title="Gen">
+                            <img src="urgent3_dev_figs/fileid_269_Gen.png" alt="Gen 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_269_Gen.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="audio-card">
+                    <div class="card-title">GAP-URGENet Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_269_GAP-URGENet.png" data-lightbox="audio-demo-fileid_269" data-title="GAP-URGENet">
+                            <img src="urgent3_dev_figs/fileid_269_GAP-URGENet.png" alt="GAP-URGENet 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_269_GAP-URGENet.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="audio-card">
+                    <div class="card-title">Clean Signal</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_269_Clean.png" data-lightbox="audio-demo-fileid_269" data-title="Clean">
+                            <img src="urgent3_dev_figs/fileid_269_Clean.png" alt="Clean 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_269_Clean.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- fileid_481 -->
+        <div class="file-section">
+            <div class="file-header">
+                <div class="file-title"><strong>fileid_481.flac</strong>: Syren noise.</div>
+            </div>
+            <div class="audio-grid">
+
+                <div class="audio-card">
+                    <div class="card-title">Noisy Signal</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_481_Noisy.png" data-lightbox="audio-demo-fileid_481" data-title="Noisy">
+                            <img src="urgent3_dev_figs/fileid_481_Noisy.png" alt="Noisy 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_481_Noisy.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Pred. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_481_Pred.png" data-lightbox="audio-demo-fileid_481" data-title="Pred">
+                            <img src="urgent3_dev_figs/fileid_481_Pred.png" alt="Pred 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_481_Pred.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Gen. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_481_Gen.png" data-lightbox="audio-demo-fileid_481" data-title="Gen">
+                            <img src="urgent3_dev_figs/fileid_481_Gen.png" alt="Gen 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_481_Gen.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="audio-card">
+                    <div class="card-title">GAP-URGENet Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_481_GAP-URGENet.png" data-lightbox="audio-demo-fileid_481" data-title="GAP-URGENet">
+                            <img src="urgent3_dev_figs/fileid_481_GAP-URGENet.png" alt="GAP-URGENet 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_481_GAP-URGENet.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="audio-card">
+                    <div class="card-title">Clean Signal</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_481_Clean.png" data-lightbox="audio-demo-fileid_481" data-title="Clean">
+                            <img src="urgent3_dev_figs/fileid_481_Clean.png" alt="Clean 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_481_Clean.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- fileid_584 -->
+        <div class="file-section">
+            <div class="file-header">
+                <div class="file-title"><strong>fileid_584.flac</strong>: Music noise.</div>
+            </div>
+            <div class="audio-grid">
+
+                <div class="audio-card">
+                    <div class="card-title">Noisy Signal</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_584_Noisy.png" data-lightbox="audio-demo-fileid_584" data-title="Noisy">
+                            <img src="urgent3_dev_figs/fileid_584_Noisy.png" alt="Noisy 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_584_Noisy.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Pred. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_584_Pred.png" data-lightbox="audio-demo-fileid_584" data-title="Pred">
+                            <img src="urgent3_dev_figs/fileid_584_Pred.png" alt="Pred 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_584_Pred.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Gen. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_584_Gen.png" data-lightbox="audio-demo-fileid_584" data-title="Gen">
+                            <img src="urgent3_dev_figs/fileid_584_Gen.png" alt="Gen 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_584_Gen.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="audio-card">
+                    <div class="card-title">GAP-URGENet Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_584_GAP-URGENet.png" data-lightbox="audio-demo-fileid_584" data-title="GAP-URGENet">
+                            <img src="urgent3_dev_figs/fileid_584_GAP-URGENet.png" alt="GAP-URGENet 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_584_GAP-URGENet.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="audio-card">
+                    <div class="card-title">Clean Signal</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_584_Clean.png" data-lightbox="audio-demo-fileid_584" data-title="Clean">
+                            <img src="urgent3_dev_figs/fileid_584_Clean.png" alt="Clean 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_584_Clean.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- fileid_748 -->
+        <div class="file-section">
+            <div class="file-header">
+                <div class="file-title"><strong>fileid_748.flac</strong>: Extreme noise.</div>
+            </div>
+            <div class="audio-grid">
+
+                <div class="audio-card">
+                    <div class="card-title">Noisy Signal</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_748_Noisy.png" data-lightbox="audio-demo-fileid_748" data-title="Noisy">
+                            <img src="urgent3_dev_figs/fileid_748_Noisy.png" alt="Noisy 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_748_Noisy.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Pred. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_748_Pred.png" data-lightbox="audio-demo-fileid_748" data-title="Pred">
+                            <img src="urgent3_dev_figs/fileid_748_Pred.png" alt="Pred 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_748_Pred.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Gen. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_748_Gen.png" data-lightbox="audio-demo-fileid_748" data-title="Gen">
+                            <img src="urgent3_dev_figs/fileid_748_Gen.png" alt="Gen 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_748_Gen.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="audio-card">
+                    <div class="card-title">GAP-URGENet Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_748_GAP-URGENet.png" data-lightbox="audio-demo-fileid_748" data-title="GAP-URGENet">
+                            <img src="urgent3_dev_figs/fileid_748_GAP-URGENet.png" alt="GAP-URGENet 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_748_GAP-URGENet.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="audio-card">
+                    <div class="card-title">Clean Signal</div>
+                    <div class="card-image">
+                        <a href="urgent3_dev_figs/fileid_748_Clean.png" data-lightbox="audio-demo-fileid_748" data-title="Clean">
+                            <img src="urgent3_dev_figs/fileid_748_Clean.png" alt="Clean 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_dev_examples/fileid_748_Clean.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Demos Section -->
+    <div class="narrow-container">
+        <div class="section-title">Audio Demos from the Blind Test Set</div>
+        
+        <!-- fileid_538 -->
+        <div class="file-section">
+            <div class="file-header">
+                <div class="file-title"><strong>fileid_538.flac</strong>: Real-recorded music noise.</div>
+            </div>
+            <div class="audio-grid2">
+
+                <div class="audio-card">
+                    <div class="card-title">Noisy Signal</div>
+                    <div class="card-image">
+                        <a href="urgent3_blind_figs/fileid_538_Noisy.png" data-lightbox="audio-demo-fileid_538" data-title="Noisy">
+                            <img src="urgent3_blind_figs/fileid_538_Noisy.png" alt="Noisy 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_blind_examples/fileid_538_Noisy.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Pred. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_blind_figs/fileid_538_Pred.png" data-lightbox="audio-demo-fileid_538" data-title="Pred">
+                            <img src="urgent3_blind_figs/fileid_538_Pred.png" alt="Pred 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_blind_examples/fileid_538_Pred.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Gen. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_blind_figs/fileid_538_Gen.png" data-lightbox="audio-demo-fileid_538" data-title="Gen">
+                            <img src="urgent3_blind_figs/fileid_538_Gen.png" alt="Gen 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_blind_examples/fileid_538_Gen.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="audio-card">
+                    <div class="card-title">GAP-URGENet Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_blind_figs/fileid_538_GAP-URGENet.png" data-lightbox="audio-demo-fileid_538" data-title="GAP-URGENet">
+                            <img src="urgent3_blind_figs/fileid_538_GAP-URGENet.png" alt="GAP-URGENet 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_blind_examples/fileid_538_GAP-URGENet.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- fileid_658 -->
+        <div class="file-section">
+            <div class="file-header">
+                <div class="file-title"><strong>fileid_658.flac</strong>: Vocal separation.</div>
+            </div>
+            <div class="audio-grid2">
+
+                <div class="audio-card">
+                    <div class="card-title">Noisy Signal</div>
+                    <div class="card-image">
+                        <a href="urgent3_blind_figs/fileid_658_Noisy.png" data-lightbox="audio-demo-fileid_658" data-title="Noisy">
+                            <img src="urgent3_blind_figs/fileid_658_Noisy.png" alt="Noisy 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_blind_examples/fileid_658_Noisy.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Pred. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_blind_figs/fileid_658_Pred.png" data-lightbox="audio-demo-fileid_658" data-title="Pred">
+                            <img src="urgent3_blind_figs/fileid_658_Pred.png" alt="Pred 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_blind_examples/fileid_658_Pred.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Gen. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_blind_figs/fileid_658_Gen.png" data-lightbox="audio-demo-fileid_658" data-title="Gen">
+                            <img src="urgent3_blind_figs/fileid_658_Gen.png" alt="Gen 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_blind_examples/fileid_658_Gen.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="audio-card">
+                    <div class="card-title">GAP-URGENet Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_blind_figs/fileid_658_GAP-URGENet.png" data-lightbox="audio-demo-fileid_658" data-title="GAP-URGENet">
+                            <img src="urgent3_blind_figs/fileid_658_GAP-URGENet.png" alt="GAP-URGENet 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_blind_examples/fileid_658_GAP-URGENet.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    
+
+        <!-- fileid_672 -->
+        <div class="file-section">
+            <div class="file-header">
+                <div class="file-title"><strong>fileid_672.flac</strong>: Vocal separation.</div>
+            </div>
+            <div class="audio-grid2">
+
+                <div class="audio-card">
+                    <div class="card-title">Noisy Signal</div>
+                    <div class="card-image">
+                        <a href="urgent3_blind_figs/fileid_672_Noisy.png" data-lightbox="audio-demo-fileid_672" data-title="Noisy">
+                            <img src="urgent3_blind_figs/fileid_672_Noisy.png" alt="Noisy 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_blind_examples/fileid_672_Noisy.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Pred. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_blind_figs/fileid_672_Pred.png" data-lightbox="audio-demo-fileid_672" data-title="Pred">
+                            <img src="urgent3_blind_figs/fileid_672_Pred.png" alt="Pred 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_blind_examples/fileid_672_Pred.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Gen. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_blind_figs/fileid_672_Gen.png" data-lightbox="audio-demo-fileid_672" data-title="Gen">
+                            <img src="urgent3_blind_figs/fileid_672_Gen.png" alt="Gen 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_blind_examples/fileid_672_Gen.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="audio-card">
+                    <div class="card-title">GAP-URGENet Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_blind_figs/fileid_672_GAP-URGENet.png" data-lightbox="audio-demo-fileid_672" data-title="GAP-URGENet">
+                            <img src="urgent3_blind_figs/fileid_672_GAP-URGENet.png" alt="GAP-URGENet 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_blind_examples/fileid_672_GAP-URGENet.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <!-- fileid_830 -->
+        <div class="file-section">
+            <div class="file-header">
+                <div class="file-title"><strong>fileid_830.flac</strong>: Whispered speech.</div>
+            </div>
+            <div class="audio-grid2">
+
+                <div class="audio-card">
+                    <div class="card-title">Noisy Signal</div>
+                    <div class="card-image">
+                        <a href="urgent3_blind_figs/fileid_830_Noisy.png" data-lightbox="audio-demo-fileid_830" data-title="Noisy">
+                            <img src="urgent3_blind_figs/fileid_830_Noisy.png" alt="Noisy 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_blind_examples/fileid_830_Noisy.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Pred. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_blind_figs/fileid_830_Pred.png" data-lightbox="audio-demo-fileid_830" data-title="Pred">
+                            <img src="urgent3_blind_figs/fileid_830_Pred.png" alt="Pred 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_blind_examples/fileid_830_Pred.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="audio-card">
+                    <div class="card-title">Gen. Branch Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_blind_figs/fileid_830_Gen.png" data-lightbox="audio-demo-fileid_830" data-title="Gen">
+                            <img src="urgent3_blind_figs/fileid_830_Gen.png" alt="Gen 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_blind_examples/fileid_830_Gen.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="audio-card">
+                    <div class="card-title">GAP-URGENet Output</div>
+                    <div class="card-image">
+                        <a href="urgent3_blind_figs/fileid_830_GAP-URGENet.png" data-lightbox="audio-demo-fileid_830" data-title="GAP-URGENet">
+                            <img src="urgent3_blind_figs/fileid_830_GAP-URGENet.png" alt="GAP-URGENet 123">
+                        </a>
+                    </div>
+                    <div class="card-audio">
+                        <audio controls>
+                            <source src="urgent3_blind_examples/fileid_830_GAP-URGENet.flac" type="audio/flac">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+
+</html>
